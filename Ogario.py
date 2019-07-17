@@ -3,10 +3,15 @@ from random import randint
 from math import sin, cos
 from time import time
 
-#class Food:
+"""
+class Food:
 
-#    def __init__(self, ):
-
+    def __init__(self):
+        self.health = None
+        self.colour = None
+        self.speed = 1
+        self.bonus = None
+"""
 pygame.init()
 pygame.font.init()
 sizeshow = (800, 600)
@@ -29,6 +34,7 @@ R_p = 10
 step = 5
 origin_step = 5
 d_step = int(step / (2 ** 0.5))
+
 
 color = (randint(0, 250), randint(0, 250), randint(0, 250))
 key_dict = {'w': False, 's': False, 'a': False, 'd': False}
@@ -57,7 +63,9 @@ while GO:
             food_list[index] = None
             R_p += 1
             score += 1
-            step = origin_step * (1 - (1 / (score + 1)))
+            origin_step *= 0.999
+            step = origin_step
+            d_step = int(step / (2 ** 0.5))
             print(step)
         else:
             pygame.draw.circle(screen, f[1],
