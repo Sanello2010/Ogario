@@ -3,22 +3,29 @@ from random import randint
 from math import sin, cos
 from time import time
 
-"""
+
 class Food:
 
     def __init__(self):
         self.health = None
-        self.colour = None
+        self.color = None
         self.speed = 1
         self.bonus = None
-"""
+
+
+    def red_food(self):
+        self.color = (255, 0, 0)
+        return self.color
+
+
+
 pygame.init()
 pygame.font.init()
 sizeshow = (800, 600)
 screen = pygame.display.set_mode(sizeshow)
 
 bg = pygame.Surface(sizeshow)
-bg.fill((255, 255, 255))
+bg.fill((220, 220, 220))
 c = pygame.time.Clock()
 
 x_p = 0
@@ -36,7 +43,7 @@ origin_step = 5
 d_step = int(step / (2 ** 0.5))
 
 
-color = (randint(0, 250), randint(0, 250), randint(0, 250))
+color = (255, 255, 102) #############player color
 key_dict = {'w': False, 's': False, 'a': False, 'd': False}
 
 food_count = 1000
@@ -45,13 +52,13 @@ food_list = []
 scale = 1
 myfont = pygame.font.SysFont('Comic Sans MS', 20)
 score = 0
-
+color_food1 = Food().red_food()
 GO = True
 while GO:
     if len(food_list) < food_count:
-        food_list.append([(randint(-1500, 1500), randint(-1500, 1500)),
-                          (randint(0, 250), randint(0, 250), randint(0, 250))])
-
+        """food_list.append([(randint(-1500, 1500), randint(-1500, 1500)),
+                          (randint(0, 250), randint(0, 250), randint(0, 250))])"""
+        food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), color_food1])
     screen.blit(bg, (0, 0))
     pygame.draw.circle(screen, color, (x_p + 400, y_p + 300), int(R_p / scale))  # цацка заменить на x_pp  y_pp
     fat = myfont.render(str(score), False, (0, 0, 0))
