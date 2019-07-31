@@ -15,8 +15,13 @@ class Food:
 
     def red_food(self):
         self.color = (255, 0, 0)
+        self.health = 1
         return self.color
 
+    def black_food(self):
+        self.color = (0, 0, 0)
+        self.health = -1
+        return self.color
 
 
 pygame.init()
@@ -52,13 +57,15 @@ food_list = []
 scale = 1
 myfont = pygame.font.SysFont('Comic Sans MS', 20)
 score = 0
-color_food1 = Food().red_food()
+red_food = Food().red_food()
+black_food = Food().black_food()
 GO = True
 while GO:
     if len(food_list) < food_count:
         """food_list.append([(randint(-1500, 1500), randint(-1500, 1500)),
                           (randint(0, 250), randint(0, 250), randint(0, 250))])"""
-        food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), color_food1])
+        food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), red_food])
+        food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), black_food])
     screen.blit(bg, (0, 0))
     pygame.draw.circle(screen, color, (x_p + 400, y_p + 300), int(R_p / scale))  # цацка заменить на x_pp  y_pp
     fat = myfont.render(str(score), False, (0, 0, 0))
@@ -69,7 +76,10 @@ while GO:
             index = food_list.index(f)
             food_list[index] = None
             R_p += 1
-            score += 1
+            if f[1] is red_food:
+                score += red_food.health()
+            elif f[1] is black_food
+                score += black_food.health()
             origin_step *= 0.999
             step = origin_step
             d_step = int(step / (2 ** 0.5))
