@@ -12,16 +12,15 @@ class Food:
         self.speed = 1
         self.bonus = None
 
-
-    def red_food(self):
+class Red_food(Food):
+    def __init__(self):
         self.color = (255, 0, 0)
         self.health = 1
-        return self.color
 
-    def black_food(self):
+class Black_food(Food):
+    def __init__(self):
         self.color = (0, 0, 0)
         self.health = -1
-        return self.color
 
 
 pygame.init()
@@ -57,8 +56,8 @@ food_list = []
 scale = 1
 myfont = pygame.font.SysFont('Comic Sans MS', 20)
 score = 0
-red_food = Food().red_food()
-black_food = Food().black_food()
+red_food = Red_food()
+black_food = Black_food()
 GO = True
 while GO:
     if len(food_list) < food_count:
@@ -67,25 +66,26 @@ while GO:
         food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), red_food])
         food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), black_food])
     screen.blit(bg, (0, 0))
-    pygame.draw.circle(screen, color, (x_p + 400, y_p + 300), int(R_p / scale))  # цацка заменить на x_pp  y_pp
+    pygame.draw.circle(screen, color, (x_p + 400, y_p + 300), int(R_p / scale))   #circle of player
     fat = myfont.render(str(score), False, (0, 0, 0))
     screen.blit(fat, (x_p + 395, y_p + 285))
     for f in food_list:
         dis = ((x_p - (f[0][0] + x_c)) ** 2 + (y_p - (f[0][1] + y_c)) ** 2) ** 0.5
         if dis < R_p:
+
+            if f[1] is red_food:
+                score += red_food.health
+            elif f[1] is black_food:
+                score += black_food.health
             index = food_list.index(f)
             food_list[index] = None
             R_p += 1
-            if f[1] is red_food:
-                score += red_food.health()
-            elif f[1] is black_food
-                score += black_food.health()
             origin_step *= 0.999
             step = origin_step
             d_step = int(step / (2 ** 0.5))
             print(step)
         else:
-            pygame.draw.circle(screen, f[1],
+            pygame.draw.circle(screen, f[1].color,
                                (int((f[0][0] + x_c) / scale) + 400,
                                 int((f[0][1] + y_c) / scale) + 300), int(4 / scale))
 
