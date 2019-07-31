@@ -11,14 +11,18 @@ class Food:
         self.color = None
         self.speed = 1
         self.bonus = None
+        self.pos = (randint(-1500, 1500), randint(-1500, 1500))
 
 class Red_food(Food):
     def __init__(self):
+        super(Red_food, self).__init__()
         self.color = (255, 0, 0)
         self.health = 1
 
+
 class Black_food(Food):
     def __init__(self):
+        super(Red_food, self).__init__()
         self.color = (0, 0, 0)
         self.health = -1
 
@@ -63,8 +67,8 @@ while GO:
     if len(food_list) < food_count:
         """food_list.append([(randint(-1500, 1500), randint(-1500, 1500)),
                           (randint(0, 250), randint(0, 250), randint(0, 250))])"""
-        food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), red_food])
-        food_list.append([(randint(-1500, 1500), randint(-1500, 1500)), black_food])
+        food_list.append([red_food.pos, red_food])
+        food_list.append([black_food.pos, black_food])
     screen.blit(bg, (0, 0))
     pygame.draw.circle(screen, color, (x_p + 400, y_p + 300), int(R_p / scale))   #circle of player
     fat = myfont.render(str(score), False, (0, 0, 0))
