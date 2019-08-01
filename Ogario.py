@@ -11,18 +11,21 @@ class Food:
         self.color = None
         self.speed = 1
         self.bonus = None
-        self.pos = (randint(-1500, 1500), randint(-1500, 1500))
+
+    def pos(self):
+        return (randint(-1500, 1500), randint(-1500, 1500))
 
 class Red_food(Food):
     def __init__(self):
-        super(Red_food, self).__init__()
+        Food.__init__(self)
+        #or super().__init__()
         self.color = (255, 0, 0)
         self.health = 1
 
 
 class Black_food(Food):
     def __init__(self):
-        super(Red_food, self).__init__()
+        Food.__init__(self)
         self.color = (0, 0, 0)
         self.health = -1
 
@@ -62,15 +65,20 @@ myfont = pygame.font.SysFont('Comic Sans MS', 20)
 score = 0
 red_food = Red_food()
 black_food = Black_food()
+
+count_black = 0
+
 GO = True
 while GO:
     if len(food_list) < food_count:
-        """food_list.append([(randint(-1500, 1500), randint(-1500, 1500)),
-                          (randint(0, 250), randint(0, 250), randint(0, 250))])"""
-        food_list.append([red_food.pos, red_food])
-        food_list.append([black_food.pos, black_food])
+
+        food_list.append([red_food.pos(), red_food])
+        if count_black < 200:
+            food_list.append([black_food.pos(), black_food])
+            count_black += 1
+
     screen.blit(bg, (0, 0))
-    pygame.draw.circle(screen, color, (x_p + 400, y_p + 300), int(R_p / scale))   #circle of player
+    pygame.draw.circle(screen, color, (x_p + 400, y_p + 300), int(R_p / scale))   #Here is the player's circle drawn
     fat = myfont.render(str(score), False, (0, 0, 0))
     screen.blit(fat, (x_p + 395, y_p + 285))
     for f in food_list:
@@ -79,19 +87,27 @@ while GO:
 
             if f[1] is red_food:
                 score += red_food.health
+                R_p += 1
+                step *= 0.999
             elif f[1] is black_food:
                 score += black_food.health
+                if R_p <= 10:
+                    pass
+                else:
+                    R_p += -1
+                    step *= 1.001
+
             index = food_list.index(f)
             food_list[index] = None
-            R_p += 1
-            origin_step *= 0.999
-            step = origin_step
+
+
+
             d_step = int(step / (2 ** 0.5))
             print(step)
         else:
             pygame.draw.circle(screen, f[1].color,
                                (int((f[0][0] + x_c) / scale) + 400,
-                                int((f[0][1] + y_c) / scale) + 300), int(4 / scale))
+                                int((f[0][1] + y_c) / scale) + 300), int(7 / scale))  #Here is the food's circles drawn
 
     food_list = [i for i in food_list if i]
 
